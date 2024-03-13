@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block navbar %}
+    <a href="{% url 'signup' %}">Зарегистрироваться</a>
+    <a href="{% url 'login' %}">Войти в аккаунт</a>
+    <a href="{% url 'main' %}" class="learn-more-btn">Узнать больше</a>
+{% endblock %}

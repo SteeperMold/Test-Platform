@@ -1,0 +1,45 @@
+.test {
+    text-align: center;
+}
+
+.question {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.question.choice-question table {
+    width: 30%;
+}
+
+.question.choice-question tr {
+    display: flex;
+    justify-content: space-between;
+}
+
+.question.choice-question td {
+    display: flex;
+    justify-items: center;
+    padding: 10px;
+}
+
+.question.name-question .inputs *:first-child {
+    margin-right: 5px;
+}
+
+.question.image-question {
+    align-items: center;
+}
+
+.question.image-question img {
+    width: 40%;
+}
+
+.question.image-question input {
+    width: 40%;
+    margin-top: 20px;
+}
+
+.button1 {
+    margin: 50px 0;
+}

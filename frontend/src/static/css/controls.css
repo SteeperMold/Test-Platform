@@ -1,0 +1,32 @@
+.controls {
+    width: 40%;
+    display: flex;
+    align-items: center;
+}
+
+.add-button {
+    background: none;
+    border: none;
+    width: 20%;
+    margin: 15px 10px 0 0;
+}
+
+.delete-button {
+    background: none;
+    border: none;
+    width: 20%;
+    margin-top: 15px;
+}
+
+.add-button img, .delete-button img {
+    width: 100%;
+    filter: invert(46%) sepia(0%) saturate(0%) hue-rotate(185deg) brightness(99%) contrast(83%);
+}
+
+.add-button:hover, .delete-button:hover {
+    cursor: pointer;
+}
+
+.add-button img:hover, .delete-button img:hover {
+    filter: invert(37%) sepia(0%) saturate(3%) hue-rotate(43deg) brightness(90%) contrast(86%);
+}

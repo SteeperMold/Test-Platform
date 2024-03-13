@@ -1,0 +1,63 @@
+.total {
+    margin: 50px 0 0 26%;
+    font-size: 1.5rem;
+}
+
+.user-answers-table {
+    border-collapse: collapse;
+}
+
+.user-answers-table th, .user-answers-table tr, .user-answers-table td {
+    padding: 15px 50px;
+    border-width: 1px;
+    border-color: rgba(147, 147, 147, 0.8);
+}
+
+.user-answers-table th,
+.user-answers-table td {
+    width: 33.33%;
+}
+
+.user-answers-table tr:hover, #incorrect-answer-tr:hover {
+    background-color: #e0e0e0;
+}
+
+#incorrect-answer-tr {
+    background-color: #fee;
+}
+
+#top-left {
+    border-style: none solid solid none;
+}
+
+#top-mid {
+    border-style: none solid solid solid;
+}
+
+#top-right {
+    border-style: none none solid solid;
+}
+
+#mid-left {
+    border-style: solid solid solid none;
+}
+
+#mid-mid {
+    border-style: solid;
+}
+
+#mid-right {
+    border-style: solid none solid solid;
+}
+
+#bottom-left {
+    border-style: solid solid none none;
+}
+
+#bottom-mid {
+    border-style: solid solid none solid;
+}
+
+#bottom-right {
+    border-style: solid none none solid;
+}

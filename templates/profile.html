@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Мой профиль | TTT{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+{% endblock %}
+{% block content %}
+    <h1 style="text-align: center;">Мои тесты</h1>
+    <div class="test-previews-container">
+        {% if tests %}
+            {% for test in tests %}
+                <a href="{% url 'test_stats' test.id %}" class="test-preview">
+                    <p>{{ test.completions_count }} {{ test.completions_count_text }}</p>
+                    <b>•</b>
+                    {{ test.title }}
+                    <b>•</b>
+                    <p>{{ test.creation_date }}</p>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p>У вас еще нет своих тестов</p>
+            <a href="{% url 'test_constructor' %}" class="create-form-btn">Создать тест</a>
+        {% endif %}
+    </div>
+{% endblock %}

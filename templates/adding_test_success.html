@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Результаты теста | TTT{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/adding_test_success.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="adding-test-success">
+        <h1>Тест успешно {% if edited %}имзенен{% else %}создан{% endif %}!</h1>
+        <div>
+            <a class="button3" href="{% url 'test' test_id=test_id %}">Перейти к тесту</a>
+            <a class="button3" id="url-copy-button">Ссылка: {{ base_url }}{% url 'test' test_id %}</a>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2.11.6/dist/umd/popper.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.3/dist/tippy-bundle.umd.min.js"></script>
+    <script>
+        const copyButton = document.getElementById("url-copy-button");
+
+        const clipboard = new ClipboardJS(copyButton, {
+            text: function () {
+                return copyButton.textContent.replace('Ссылка: ', "");
+            }
+        });
+
+        tippy("#url-copy-button", {
+            content: "Ссылка скопирована",
+            theme: "light",
+            placement: "bottom",
+            trigger: "click",
+            interactive: false,
+        });
+    </script>
+{% endblock %}

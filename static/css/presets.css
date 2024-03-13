@@ -1,0 +1,164 @@
+body {
+    font-family: Roboto, sans-serif;
+    background-color: #FFF;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    font-size: 20px;
+}
+
+h2 {
+    margin-bottom: 60px;
+}
+
+.error-message {
+    text-align: center;
+}
+
+select {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.link {
+    color: #5b5b5b;
+    margin-top: 10px;
+    font-size: 1.2rem;
+    text-decoration: underline;
+}
+
+.link:hover {
+    cursor: pointer;
+    color: #3a3a3a;
+}
+
+.button1 {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #f81ce5;
+    border: none;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.button1:hover {
+    background-color: #fa55ec;
+    cursor: pointer;
+}
+
+.button1.small {
+    padding: 10px 10px;
+    border-radius: 3px;
+}
+
+.button2 {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #000000;
+    border: none;
+    border-radius: 6px;
+}
+
+.button2:hover {
+    cursor: pointer;
+    background-color: #3a3a3a;
+}
+
+.button3 {
+    color: #5b5b5b;
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.button3:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.input-default {
+    border-style: none none solid none;
+    width: 30%;
+    padding: 10px 5px;
+    font-size: 1rem;
+}
+
+.input-default::placeholder {
+    font-size: 1rem;
+}
+
+.input-default:focus {
+    outline: none;
+}
+
+.input-default.wide {
+    width: 80%;
+}
+
+.input-narrow {
+    border-style: none none solid none;
+    padding: 10px 5px;
+    font-size: 1rem;
+}
+
+.input-narrow::placeholder {
+    font-size: 1rem;
+}
+
+.input-narrow:focus {
+    outline: none;
+}
+
+.test-previews-container {
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+}
+
+.test-previews-container .search-result-header {
+    margin-bottom: 80px;
+}
+
+.test-preview {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    text-decoration: none;
+    color: #000;
+    font-size: 1.5rem;
+    border: 1px rgba(147, 147, 147, 0.8) solid;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+}
+
+.test-preview:hover {
+    font-size: 1.6rem;
+    width: 80%;
+}
+
+.test-preview:hover > *:not(.likes-count) {
+    font-size: 1.5rem;
+}
+
+.test-preview > *:not(.likes-count) {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}

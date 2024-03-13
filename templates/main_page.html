@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}TTT{% endblock %}
+{% block navbar %}
+    {% if user.is_authenticated %}
+        <div class="account-dropdown">
+            <button class="dropdown-button">{{ user.username }}</button>
+            <div class="dropdown-content">
+                <a href="{% url 'profile' %}">Профиль</a>
+                <a href="{% url 'settings' %}">Настройки</a>
+                <form class="logout-form" method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button class="button-link" type="submit">Выйти</button>
+                </form>
+            </div>
+            <script src="{% static 'js/dropdown_controller.js' %}"></script>
+        </div>
+    {% else %}
+        <a href="{% url 'signup' %}">Зарегистрироваться</a>
+        <a href="{% url 'login' %}">Войти в аккаунт</a>
+    {% endif %}
+    <a class="create-form-btn" href="{% url 'test_constructor' %}">Создать тест</a>
+{% endblock %}
+{% block content %}
+    <h1 style="text-align: center;">главная</h1>
+{% endblock %}

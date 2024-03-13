@@ -1,0 +1,144 @@
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: Roboto, sans-serif;
+    background-color: #FFF;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+h2 {
+    margin-bottom: 60px;
+}
+
+.error-message {
+    text-align: center;
+}
+
+select {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+/* !НАВБАР! */
+nav {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    padding: 30px 16px 15px;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 2;
+}
+
+.navbar-left {
+    display: flex;
+    justify-content: flex-start;
+    margin-right: auto;
+    background-color: #fff;
+}
+
+.navbar-left a {
+    margin: 3px 0 0 10px;
+    text-decoration: none;
+    color: #5b5b5b;
+}
+
+.navbar-right {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-top: 0;
+    background-color: #fff;
+}
+
+.navbar-right a:not(.create-form-btn, .learn-more-btn) {
+    margin: 3px 30px 0 0;
+    text-decoration: none;
+    color: #5b5b5b;
+}
+
+.navbar-left a:hover:not(.create-form-btn, .learn-more-btn),
+.navbar-right a:hover:not(.create-form-btn, .learn-more-btn) {
+    background-color: #f0f0f0;
+}
+
+.create-form-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: -10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff !important;
+    background-color: #f81ce5;
+    border: none;
+    border-radius: 6px;
+}
+
+.create-form-btn:hover {
+    background-color: #fa55ec;
+}
+
+.learn-more-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: -10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #000000;
+    border: none;
+    border-radius: 6px;
+}
+
+.learn-more-btn:hover {
+    background-color: #3a3a3a;
+}
+
+.account-dropdown {
+    position: relative;
+    justify-content: flex-start;
+    margin-right: 30px;
+}
+
+.dropdown-button {
+    color: #5b5b5b;
+    background-color: #fff;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.dropdown-button:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    margin: 10px 0 0 -10px;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}

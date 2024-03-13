@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/presets.css' %}">
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+<nav>
+    <div class="navbar-left">
+        <a href="{% url 'main' %}">Главная</a>
+    </div>
+    <div class="navbar-right">
+        <a href="{% url 'tests' %}">Тесты</a>
+        {% block navbar %}
+            {% if user.is_authenticated %}
+                <div class="account-dropdown">
+                    <button class="dropdown-button">{{ user.username }}</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'profile' %}">Профиль</a>
+                        <a href="{% url 'settings' %}">Настройки</a>
+                        <form class="logout-form" method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button class="button-link" type="submit">Выйти</button>
+                        </form>
+                    </div>
+                    <script src="{% static 'js/dropdown_controller.js' %}"></script>
+                </div>
+            {% endif %}
+            <a href="{% url 'main' %}" class="learn-more-btn">Узнать больше</a>
+        {% endblock %}
+    </div>
+</nav>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+#create-test-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#test-constructor-submit-button {
+    margin: 50px 0 100px 0;
+}
+
+#test-theme-input {
+    border-style: none none solid none;
+    padding: 10px 0;
+    font-size: 1.5rem;
+    margin: 30px 0 80px 0;
+}
+
+#test-name-input, .question .question-name-input,
+.question .question-right-answer-input, .answer-option-input {
+    border-style: none none solid none;
+    padding: 10px 0;
+    font-size: 1.5rem;
+    margin: 30px 0;
+}
+
+#test-name-input, #test-theme-input {
+    width: 40%;
+}
+
+.question .question-right-answer-input, .answer-option-input {
+    width: 90%;
+}
+
+.question .question-name-input {
+    width: 60%;
+}
+
+#test-name-input::placeholder, #test-theme-input::placeholder, .question .question-name-input::placeholder,
+.question .question-right-answer-input::placeholder, .answer-option-input::placeholder {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#test-name-input:focus, #test-theme-input:focus, .question .question-name-input:focus,
+.question .question-right-answer-input:focus, .answer-option-input:focus {
+    outline: none;
+}
+
+.questions-container {
+    display: block;
+    width: 40%;
+}
+
+.question {
+    display: grid;
+    align-content: center;
+    margin-top: 30px;
+}
+
+.question-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.question-type-select {
+    width: 35%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.question-answers {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.answer-options-controls {
+    display: flex;
+    width: 90%;
+    justify-self: flex-end;
+}
+
+.edit-clear-container {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-clear-button {
+    background: none;
+    border: none;
+    width: 3.5%;
+    margin-top: 30px;
+}
+
+.edit-clear-button img {
+    width: 100%;
+    filter: invert(46%) sepia(0%) saturate(0%) hue-rotate(185deg) brightness(99%) contrast(83%);
+}
+
+.edit-clear-button:hover {
+    cursor: pointer;
+}
+
+.edit-clear-button img:hover {
+    filter: invert(37%) sepia(0%) saturate(3%) hue-rotate(43deg) brightness(90%) contrast(86%);
+}
+
+.image-input, .template-input {
+    display: none;
+}
+
+.image-input-label {
+    justify-self: center;
+    color: #5b5b5b;
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.image-input-label:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.image-preview img {
+    width: 100%;
+}
+
+#edit-diploma-content {
+    display: none;
+}
+
+.tab-buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    padding: 15px;
+}
+
+.tab-button.active {
+    border: 5px #f81ce5;
+    border-style: none none solid none;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    font-size: 1.25rem;
+}
+
+.tab-button:hover {
+    cursor: pointer;
+}
+
+.tab-content {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+}
+
+#insert-button {
+    margin-left: 15px;
+}
+
+.attachment-name {
+    font-size: 2rem;
+}
+
+.delete-attachment-button {
+    width: 0.9em;
+    height: 0.9em;
+    align-self: center;
+    margin-left: 0.3em;
+}
+
+.delete-attachment-button:hover {
+    cursor: pointer;
+    background-color: #f0f0f0;
+}

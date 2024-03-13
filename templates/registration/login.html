@@ -1,0 +1,25 @@
+{% extends 'not_authenticated_base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/auth.css' %}">
+{% endblock %}
+{% block content %}
+    <form class="auth-form" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <h1>Вход в аккаунт</h1>
+        {% for field in form.visible_fields %}
+            {{ field }}
+            {% for error in field.errors %}
+                <p class="form-error">{{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+        <button type="submit" class="button1">Войти</button>
+        <div>
+            <p>Забыли пароль?</p>
+            <a href="{% url 'password_reset' %}">Восстановить</a>
+        </div>
+    </form>
+{% endblock %}

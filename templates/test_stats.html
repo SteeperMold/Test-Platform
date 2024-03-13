@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Статиска теста | TTT{% endblock %}
+{% block content %}
+    <div style="text-align: center;">
+        <a class="button3" href="{% url 'edit_test' test.id %}">Редактировать тест</a>
+        <h1>Данные о тесте "{{ test.title }}"</h1>
+    </div>
+    <div class="test-previews-container">
+        {% if user_test_results %}
+            {% for user_result in user_test_results %}
+                <a href="{% url 'user_answers' test.id user_result.id %}" class="test-preview">
+                    <p>{{ user_result.percentage }}% правильных ответов</p>
+                    <b>•</b>
+                    {% if user_result.users_name and user_result.users_surname %}
+                        {{ user_result.users_name }} {{ user_result.users_surname }}
+                    {% else %}
+                        Неизвестный пользователь
+                    {% endif %}
+                    <b>•</b>
+                    <p id="date">{{ user_result.completion_date }}</p>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p>Этот тест еще никто не проходил</p>
+        {% endif %}
+    </div>
+{% endblock %}

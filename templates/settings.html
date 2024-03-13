@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Настройки | TTT{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
+{% block content %}
+    {% load tz %}
+    {% get_current_timezone as TIME_ZONE %}
+    <form class="setting-form" action="{% url 'settings' %}" method="post">
+        {% csrf_token %}
+        <div class="category">
+            <h2>Настройки профиля</h2>
+            <h4 class="">Часовой пояс</h4>
+            <select name="timezone" id="#timezone-select">
+                <option value="Europe/Kaliningrad" {% if TIME_ZONE == "Europe/Kaliningrad" %}selected{% endif %}>
+                    Калининградское время (UTC+2)
+                </option>
+                <option value="Europe/Moscow" {% if TIME_ZONE == "Europe/Moscow" %}selected{% endif %}>
+                    Московское время (UTC+3)
+                </option>
+                <option value="Europe/Samara" {% if TIME_ZONE == "Europe/Samara" %}selected{% endif %}>
+                    Самарское время (UTC+4)
+                </option>
+                <option value="Asia/Yekaterinburg" {% if TIME_ZONE == "Asia/Yekaterinburg" %}selected{% endif %}>
+                    Екатеринбергское время (UTC+5)
+                </option>
+                <option value="Asia/Omsk" {% if TIME_ZONE == "Asia/Omsk" %}selected{% endif %}>
+                    Омское время (UTC+6)
+                </option>
+                <option value="Asia/Krasnoyarsk" {% if TIME_ZONE == "Asia/Krasnoyarsk" %}selected{% endif %}>
+                    Красноярское время (UTC+7)
+                </option>
+                <option value="Asia/Irkutsk" {% if TIME_ZONE == "Asia/Irkutsk" %}selected{% endif %}>
+                    Иркутское время (UTC+8)
+                </option>
+                <option value="Asia/Yakutsk" {% if TIME_ZONE == "Asia/Yakutsk" %}selected{% endif %}>
+                    Якутское время (UTC+9)
+                </option>
+                <option value="Asia/Vladivostok" {% if TIME_ZONE == "Asia/Vladivostok" %}selected{% endif %}>
+                    Владивостокское время (UTC+10)
+                </option>
+                <option value="Asia/Magadan" {% if TIME_ZONE == "Asia/Magadan" %}selected{% endif %}>
+                    Магаданское время (UTC+11)
+                </option>
+                <option value="Asia/Kamchatka" {% if TIME_ZONE == "Asia/Kamchatka" %}selected{% endif %}>
+                    Камчатское время (UTC+12)
+                </option>
+            </select>
+        </div>
+        <button type="submit" class="button1">Применить настройки</button>
+    </form>
+    <div class="categories-container">
+        <div class="category">
+            <h2>Аккаунт</h2>
+            <a href="{% url 'password_change' %}">Сменить пароль</a>
+        </div>
+    </div>
+{% endblock %}

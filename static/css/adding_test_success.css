@@ -1,0 +1,24 @@
+.adding-test-success {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.adding-test-success h1 {
+    margin-bottom: 30px;
+}
+
+.adding-test-success div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+}
+
+.adding-test-success div a {
+    font-size: 1.2rem;
+}
+
+#url-copy-button:hover {
+    cursor: text;
+}

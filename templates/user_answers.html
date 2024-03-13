@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ответы пользователя | TTT{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user_answers.css' %}">
+{% endblock %}
+{% block content %}
+    <div style="text-align: center">
+        {% if user_test_result.users_name and user_test_result.users_surname %}
+            <h1>Ответы пользователя {{ user_test_result.users_name }} {{ user_test_result.users_surname }}
+                на тест "{{ test.title }}"</h1>
+            {% if user_test_result.school_name %}
+                <h2>{{ user_test_result.school_name }}</h2>
+            {% endif %}
+        {% else %}
+            <h1>Ответы анонимного пользователя на тест "{{ test.title }}"</h1>
+        {% endif %}
+
+        <table class="user-answers-table">
+            <tr>
+                <th id="top-left">Вопрос</th>
+                <th id="top-mid">Ответ пользователя</th>
+                <th id="top-right">Правильный ответ</th>
+            </tr>
+            {% for question, answer in question_and_answer_zip %}
+                <tr {% if not answer.is_correct %} id="incorrect-answer-tr" {% endif %}>
+                    <td id="{% if forloop.last %}bottom{% else %}mid{% endif %}-left">{{ question.question_text }}</td>
+                    <td id="{% if forloop.last %}bottom{% else %}mid{% endif %}-mid">{{ answer.answer_text }}</td>
+                    <td id="{% if forloop.last %}bottom{% else %}mid{% endif %}-right">{{ question.answer_text }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <p class="total">Итого: {{ user_test_result.percentage }}% правильных ответов</p>
+    </div>
+{% endblock %}

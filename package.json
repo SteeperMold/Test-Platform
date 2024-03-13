@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "pdfjs": "^2.5.2",
+    "pdfjs-dist": "^4.0.269",
+    "react-pdf": "^7.6.0",
+    "react-pdf-to-image": "^1.0.2"
+  }
+}

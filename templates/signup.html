@@ -1,0 +1,19 @@
+{% extends 'not_authenticated_base.html' %}
+{% block title %}Регистрация | TTT{% endblock %}
+{% block content %}
+    <div class="account-form-container">
+        <h1>Регистрация</h1>
+        <form method="post" id="form">
+            {% csrf_token %}
+            {{ form.username }}
+            <p id="username-error" class="form-error">{{ form.errors.username }}</p>
+            {{ form.email }}
+            <p id="email-error" class="form-error">{{ form.errors.email }}</p>
+            {{ form.password }}
+            <p id="password-error" class="form-error">{{ form.errors.password }}</p>
+            {{ form.password_confirm }}
+            <p id="password-confirm-error" class="form-error">{{ form.errors.password_confirm }}</p>
+            <button type="submit" id="#submit" class="button2">Зарегистрироваться</button>
+        </form>
+    </div>
+{% endblock %}

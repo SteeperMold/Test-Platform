@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Тесты | TTT{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/tests.css' %}">
+{% endblock %}
+{% block content %}
+    {% if not query %}
+        <h1 class="searchbar-header">Какой тест вы хотите пройти сегодня?</h1>
+        <form id="search-form" method="GET" action="{% url 'tests' %}">
+            <input id="searchbar" type="text" name="search_query" value="" placeholder="Введите запрос"
+                   autocomplete="off">
+            <button id="clear-button" type="button">
+                <img src="{% static 'svg/cross.svg' %}" alt="Очистить ввод">
+            </button>
+            <button id="search-button" type="submit">
+                <img src="{% static 'svg/lens.svg' %}" alt="Найти">
+            </button>
+        </form>
+        <script>
+            const searchBar = document.getElementById('searchbar');
+            const clearButton = document.getElementById('clear-button');
+
+            document.addEventListener('DOMContentLoaded', function () {
+                searchBar.addEventListener('input', function () {
+                    clearButton.style.visibility = searchBar.value === "" ? 'hidden' : 'visible';
+                });
+
+                searchBar.addEventListener('keydown', function (event) {
+                    if (event.key === 'Delete') {
+                        searchBar.value = '';
+                        clearButton.style.visibility = 'hidden';
+                    }
+                });
+
+                clearButton.addEventListener('click', function () {
+                    searchBar.value = '';
+                    clearButton.style.visibility = 'hidden';
+                });
+            });
+        </script>
+    {% else %}
+        <div class="test-previews-container">
+            {% if tests %}
+                <p class="search-result-header">По запросу "{{ query }}" найдено:</p>
+                {% for test in tests %}
+                    <a href="{% url 'test' test.id %}" class="test-preview">
+                        <p class="likes-count"><img src="{% static 'svg/like.svg' %}" alt="Лайков:">{{ test.likes }}</p>
+                        <b>•</b>
+                        {{ test.title }}
+                        <b>•</b>
+                        <p>{{ test.creation_time_ago }}</p>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p>По запросу "{{ query }}" найдено:</p>
+                <p>...</p>
+                <p>Ничего не найдено :(</p>
+                <a class="button1" href="{% url 'tests' %}">Назад</a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}
