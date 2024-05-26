@@ -24,6 +24,7 @@
     "path-browserify": "^1.0.1",
     "pdf2img": "^0.5.0",
     "pdf2pic": "^3.1.0",
+    "pdfjs-dist": "^4.2.67",
     "popper.js": "^1.16.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -40,7 +41,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts ../static/build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
