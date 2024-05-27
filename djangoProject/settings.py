@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-!no#)8+xc580ij9eda+d!xpdzopm$s+z=8^98-*0$gqxckx@oc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['steepermold.pythonanywhere.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['45.11.26.52:8000']
 
 # Application definition
 
@@ -55,15 +55,13 @@ MIDDLEWARE = [
 CSRF_COOKIE_SECURE = False
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
-    "http://localhost:3000",
-    "http://127.0.0.1:8000",
+    "http://45.11.26.52:8000",
+    "http://45.11.26.52:3000",
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://localhost:3000",
-    "http://127.0.0.1:8000",
+    "http://45.11.26.52:8000",
+    "http://45.11.26.52:3000",
 ]
 
 ROOT_URLCONF = 'djangoProject.urls'
@@ -149,6 +147,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
