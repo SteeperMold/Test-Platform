@@ -19,8 +19,9 @@ const Test = () => {
         let answerOptions = undefined;
 
         if (data.answer_options) {
-            answerOptions = data.answer_options.map((text, optionIndex) => <AnswerOption index={index} key={optionIndex}
-                                                                                         text={text}/>);
+            answerOptions = data.answer_options.map((text, optionIndex) => {
+                return <AnswerOption index={index} key={optionIndex} text={text}/>;
+            });
         }
 
         return <Question index={index} key={index} questionText={data.question_text}

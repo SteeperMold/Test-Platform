@@ -19,4 +19,4 @@ const App = () => {
 }
 
 export default App;
-export const baseURL = "http://45.11.26.52:8000";
+export const baseURL = "http://45.11.26.52";
