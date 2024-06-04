@@ -1,5 +1,6 @@
 import React, {useCallback} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import {baseURL} from '../App'
 import {EditorState, Modifier} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
@@ -39,7 +40,12 @@ const AddBackgroundImageButton = ({setBackgroundImage}) => {
         const formData = new FormData();
         formData.append('image', file);
 
-        axios.put(`${baseURL}/api/put_image/`, formData, {headers: {"Content-Type": "multipart/form-data"}})
+        axios.put(`${baseURL}/api/put_image/`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                "X-CSRFToken": Cookies.get("csrftoken"),
+            }
+        })
             .catch(error => console.error(error))
             .then(response => {
                 const imageURL = response.data.image_url;

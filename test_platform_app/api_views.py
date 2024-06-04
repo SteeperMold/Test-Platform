@@ -29,7 +29,7 @@ def get_test_edit_data(request, test_id):
         return Response({'error': 'test not found'}, status=status.HTTP_200_OK)
 
     # if not request.user.is_authenticated or not Test.objects.filter(id=test_id, creator=request.user).exists():
-    #     return Response({'error': 'not a creator'}, status=status.HTTP_200_OK)
+    #     return Response({'error': 'not a creator'}, status=status.HTTP_200_OK)  # TODO вернуть
 
     test = Test.objects.get(id=test_id)
     response['test'] = TestSerializer(test).data
