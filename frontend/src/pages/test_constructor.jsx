@@ -20,7 +20,7 @@ const TestConstructor = () => {
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
     const [backgroundImageURL, setBackgroundImageURL] = useState(null);
 
-    const submitTest = () => {
+    const submitTest = (event) => {
         if (editorOpen) {
             const rawContentState = convertToRaw(editorState.getCurrentContent());
             let content = draftToHtml(rawContentState);
@@ -28,6 +28,13 @@ const TestConstructor = () => {
                 content += `<style>body{background-image:url("${backgroundImageURL}");background-repeat:no-repeat;background-position-x:center;background-position-y:center;background-size:contain;}</style>`;
             }
             document.getElementById('template-input').value = content;
+        }
+
+        for (let i = 0; i !== questions.length; i++) {
+            if (document.querySelector(`form input[name="answer_text[${i}]"]`) === null) {
+                event.preventDefault();
+                document.getElementsByClassName('question')[i].scrollIntoView({behavior: "smooth"});
+            }
         }
     };
 

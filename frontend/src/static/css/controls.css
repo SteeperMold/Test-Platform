@@ -4,17 +4,22 @@
     align-items: center;
 }
 
+.add-question-tooltip, .delete-question-tooltip {
+    width: 10%;
+    margin-right: 10%;
+}
+
 .add-button {
     background: none;
     border: none;
-    width: 20%;
+    width: 100%;
     margin: 15px 10px 0 0;
 }
 
 .delete-button {
     background: none;
     border: none;
-    width: 20%;
+    width: 100%;
     margin-top: 15px;
 }
 

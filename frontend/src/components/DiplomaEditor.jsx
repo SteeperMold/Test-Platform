@@ -61,7 +61,7 @@ const AddBackgroundImageButton = ({setBackgroundImage}) => {
             const pdf = await getDocument(reader.result).promise;
             const page = await pdf.getPage(1);
 
-            const viewport = page.getViewport({scale: 5});
+            const viewport = page.getViewport({scale: 2});
             const canvas = document.createElement('canvas');
             const canvasContext = canvas.getContext('2d');
             canvas.height = viewport.height || viewport.viewBox[3];

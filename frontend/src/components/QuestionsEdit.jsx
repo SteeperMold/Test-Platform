@@ -3,13 +3,14 @@ import {Tooltip} from 'react-tippy';
 import 'tippy.js/dist/tippy.css';
 import plus_svg from '../static/svg/plus.svg'
 import trashbox_svg from '../static/svg/trashbox.svg'
+import tick_svg from '../static/svg/tick.svg';
 
 const Question = ({
                       index,
                       questionType = "text",
                       text = "",
                       rightAnswer = "",
-                      options = [<AnswerOption index={index} key={index}/>],
+                      options = [],
                       imageURL = null
                   }) => {
     const [type, setType] = useState(questionType);
@@ -58,43 +59,92 @@ const TextQuestion = ({index, type, setType, text, rightAnswer}) => {
     );
 };
 
-export const AnswerOption = ({index, text = ""}) => {
-    return <input className="answer-option-input" name={`option_texts[${index}]`}
-                  defaultValue={text} placeholder="Вариант ответа" autoComplete="off" required/>;
+export const AnswerOption = ({
+                                 questionIndex,
+                                 optionIndex,
+                                 rightAnswerIndex,
+                                 setRightAnswerIndex,
+                                 text = ""
+                             }) => {
+    const [inputContent, setInputContent] = useState(text);
+    const [isLabelVisible, setIsLabelVisible] = useState(inputContent.length !== 0 && inputContent.length < 30);
+    const [isButtonVisible, setIsButtonVisible] = useState(false);
+
+    const handleOnInput = (event) => {
+        setInputContent(event.target.value);
+        const inputLen = event.target.value.length;
+        setIsLabelVisible(inputLen !== 0 && inputLen < 30);
+    };
+
+    return <div className="answer-option-container"
+                onMouseEnter={() => setIsButtonVisible(true)} onMouseLeave={() => setIsButtonVisible(false)}>
+        {optionIndex === rightAnswerIndex ? <>
+            <div className="question-right-answer-input-container">
+                <input className="question-right-answer-input" id={`answer-input-${questionIndex}-${optionIndex}`}
+                       name={`answer_text[${questionIndex}]`} defaultValue={inputContent} placeholder="Правильный ответ"
+                       autoComplete="off" required onInput={handleOnInput}/>
+                <label htmlFor={`answer-input-${questionIndex}-${optionIndex}`}
+                       style={{
+                           opacity: `${isLabelVisible ? 1 : 0}`,
+                           visibility: `${isLabelVisible ? 'visible' : 'hidden'}`
+                       }}>
+                    Правильный ответ
+                </label>
+            </div>
+        </> : (
+            <input className="answer-option-input" name={`option_texts[${questionIndex}]`}
+                   defaultValue={inputContent} placeholder="Вариант ответа" autoComplete="off" required
+                   onInput={handleOnInput}/>
+        )}
+
+        <Tooltip className="correct-option-tooltip" title="Отметить вариант ответа правильным"
+                 style={{opacity: `${isButtonVisible ? 1 : 0}`}}
+                 position="bottom" theme="dark">
+            <button type="button" onClick={() => setRightAnswerIndex(optionIndex)}>
+                <img src={tick_svg} alt="Отметить правильным"/>
+            </button>
+        </Tooltip>
+    </div>;
 };
 
 const ChoiceQuestion = ({index, type, setType, text, options, rightAnswer}) => {
-    const [answerOptions, setAnswerOptions] = useState(options);
+    const [rightAnswerIndex, setRightAnswerIndex] = useState(0);
+    const [answerOptions, setAnswerOptions] = useState(options.length !== 0 ? [{text: rightAnswer}, ...options] : [{}, {}]);
+
+    const addAnswerOption = () => setAnswerOptions([...answerOptions, {}]);
+    const deleteAnswerOption = () => answerOptions.length > 2 && setAnswerOptions(answerOptions.slice(0, -1));
 
     return (
-        <div className="question">
+        <Tooltip title="Не выбран правильный ответ!" open={rightAnswerIndex >= answerOptions.length}
+                 position="top" className="question">
             <div className="question-header">
                 <input className="question-name-input" name="question_texts" placeholder="Вопрос"
                        defaultValue={text} autoComplete="off" required/>
                 <QuestionTypeSelector type={type} setType={setType}/>
             </div>
             <div className="question-answers">
-                <input className="question-right-answer-input" name={`answer_text[${index}]`}
-                       defaultValue={rightAnswer} placeholder="Правильный ответ" autoComplete="off" required/>
-                {answerOptions}
+                {answerOptions.map((option, optionIndex) => (
+                    <AnswerOption questionIndex={index} optionIndex={optionIndex} key={optionIndex}
+                                  rightAnswerIndex={rightAnswerIndex} setRightAnswerIndex={setRightAnswerIndex}
+                                  text={option.text}/>
+                ))}
             </div>
             <div className="answer-options-controls">
-                <Tooltip title="Добавить вариант ответа" position="bottom" theme="dark">
-                    <button type="button" id="add-answer-option-button" className="add-button"
-                            onClick={() => setAnswerOptions([...answerOptions,
-                                <AnswerOption index={index} key={answerOptions.length}/>])}>
+                <Tooltip className="add-answer-option-tooltip" title="Добавить вариант ответа"
+                         position="bottom" theme="dark">
+                    <button type="button" className="add-button" onClick={addAnswerOption}>
                         <img src={plus_svg} alt="Добавить вариант ответа"/>
                     </button>
                 </Tooltip>
-                <Tooltip title="Удалить вариант ответа" position="bottom" theme="dark"
-                         style={{visibility: `${answerOptions.length > 1 ? "visible" : "hidden"}`}}>
-                    <button type="button" id="delete-answer-option-button" className="delete-button"
-                            onClick={() => answerOptions.length > 1 && setAnswerOptions(answerOptions.slice(0, -1))}>
+                <Tooltip className="delete-answer-option-tooltip" title="Удалить вариант ответа"
+                         style={{visibility: `${answerOptions.length > 2 ? "visible" : "hidden"}`}}
+                         position="bottom" theme="dark">
+                    <button type="button" className="delete-button" onClick={deleteAnswerOption}>
                         <img src={trashbox_svg} alt="Удалить вариант ответа"/>
                     </button>
                 </Tooltip>
             </div>
-        </div>
+        </Tooltip>
     );
 };
 

@@ -196,10 +196,10 @@ def test(request, test_id):
     request.session["correct_answers_text"] = correct_answers_text
     request.session["incorrect_answers_text"] = incorrect_answers_text
 
-    splashes = {range(100, 101): ["Вы восхитительны!", "Так держать!", "ggwp"],
+    splashes = {range(100, 101): ["Так держать!"],
                 range(50, 100): ["Ну почти", "Ошибки - это нормально"],
                 range(20, 50): ["Не лучший результат...", "В следующий раз постарайтесь лучше!"],
-                range(0, 20): ["Оценки - не главное", "гуд лак некст тайм", "гг вп ланая"]}
+                range(0, 20): ["Оценки - не главное"]}
 
     splash = ''
     for splash_range, splash_texts in splashes.items():

@@ -23,6 +23,7 @@ const EditTest = () => {
     // edit diploma tab
     const [editorOpen, setEditorOpen] = useState(false);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const [backgroundImageURL, setBackgroundImageURL] = useState(null);
 
 
     const convertDataToComponents = (data, index) => {
@@ -47,10 +48,8 @@ const EditTest = () => {
         let answerOptions = undefined;
 
         if (data.answer_options) {
-            answerOptions = data.answer_options.map((text, optionIndex) => <AnswerOption index={index} key={optionIndex}
-                                                                                         text={text}/>)
+            answerOptions = data.answer_options.map((text) => ({text: text}));
         }
-
         return <Question index={index} key={index} questionType={data.question_type}
                          text={data.question_text} rightAnswer={data.answer_text}
                          options={answerOptions} imageURL={data.image}/>;
@@ -79,10 +78,21 @@ const EditTest = () => {
             });
     }, []);
 
-    const submitTest = () => {
+    const submitTest = (event) => {
         if (editorOpen) {
             const rawContentState = convertToRaw(editorState.getCurrentContent());
-            document.getElementById('template-input').value = draftToHtml(rawContentState);
+            let content = draftToHtml(rawContentState);
+            if (backgroundImageURL) {
+                content += `<style>body{background-image:url("${backgroundImageURL}");background-repeat:no-repeat;background-position-x:center;background-position-y:center;background-size:contain;}</style>`;
+            }
+            document.getElementById('template-input').value = content;
+        }
+
+        for (let i = 0; i !== questions.length; i++) {
+            if (document.querySelector(`form input[name="answer_text[${i}]"]`) === null) {
+                event.preventDefault();
+                document.getElementsByClassName('question')[i].scrollIntoView({behavior: "smooth"});
+            }
         }
     };
 
@@ -134,7 +144,8 @@ const EditTest = () => {
                                 <div id="edit-diploma-content" className="tab-content"
                                      style={{display: `${activeTab === 2 ? "flex" : "none"}`}}>
                                     {(testData.test.custom_diploma_template || editorOpen) &&
-                                        <DiplomaEditor editorState={editorState} setEditorState={setEditorState}/>}
+                                        <DiplomaEditor editorState={editorState} setEditorState={setEditorState}
+                                                       setBackgroundImageURL={setBackgroundImageURL}/>}
                                     {!testData.test.custom_diploma_template && !editorOpen && (
                                         <>
                                             <h3>
