@@ -61,6 +61,12 @@ def create_test(request):
     if request.user.is_authenticated:
         test.creator = request.user
 
+    if diploma_template := request.POST.get("diploma_template"):
+        test.custom_diploma_template = diploma_template
+
+    if background_image := request.POST.get("background_image_url"):
+        test.diploma_background_image_url = background_image
+
     questions_to_save = []
     answer_options_to_save = []
 
@@ -87,9 +93,6 @@ def create_test(request):
                 answer_options_to_save.append(answer_option)
 
         questions_to_save.append(question)
-
-    if request.POST.get("diploma_template"):
-        test.custom_diploma_template = request.POST.get("diploma_template")
 
     test.save()
     for question in questions_to_save:

@@ -73,9 +73,9 @@ def get_test_data(request, test_id):
     return Response(response, status=status.HTTP_200_OK)
 
 
-@api_view(['PUT'])
+@api_view(['POST'])
 @parser_classes([MultiPartParser])
-def put_image(request):
+def upload_image(request):
     serializer = ImageSerializer(data=request.data)
 
     if serializer.is_valid():

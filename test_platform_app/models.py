@@ -12,6 +12,7 @@ class Test(models.Model):
     dislikes = models.PositiveIntegerField(default=0)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     custom_diploma_template = models.TextField(null=True, blank=True)
+    diploma_background_image_url = models.CharField(max_length=255, null=True, blank=True)
 
     def increment_likes(self):
         self.likes += 1

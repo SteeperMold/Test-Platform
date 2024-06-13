@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useEffect, useCallback} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {baseURL} from '../App'
@@ -9,6 +9,67 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import '../static/css/diploma_editor.css';
 import NoZoomPopup from "./NoZoomPopup";
 import {getDocument} from 'pdfjs-dist/webpack';
+
+const DiplomaEditor = ({editorState, setEditorState, backgroundImageURL, setBackgroundImageURL}) => {
+    useEffect(() => {
+        if (backgroundImageURL === null) {
+            return;
+        }
+
+        axios.get(`${backgroundImageURL}`, {responseType: 'blob'})
+            .then(response => {
+                const imageBlob = new Blob([response.data]);
+                const file = new File([imageBlob], `img.jpg`, {
+                    type: 'image/jpeg',
+                    lastModified: new Date().getTime()
+                }, 'utf-8');
+                const container = new DataTransfer();
+                container.items.add(file);
+                document.getElementById("baground-image-input").files = container.files;
+                document.querySelector('.rdw-editor-main').style.background =
+                    `url(${backgroundImageURL}) center center / contain no-repeat`;
+            })
+            .catch(error => console.error(error));
+    });
+
+    const pasteText = (text) => {
+        setEditorState(EditorState.push(editorState, Modifier.insertText(
+            editorState.getCurrentContent(),
+            editorState.getSelection(),
+            text), 'insert-characters'
+        ));
+    };
+
+    const toolbarOptions = {
+        options: ['history', 'inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'emoji', 'image'],
+        image: {
+            uploadEnabled: true,
+            previewImage: true,
+            uploadCallback: (image) => new Promise((resolve, reject) => {
+                const formData = new FormData();
+                formData.append("image", image);
+
+                axios.put(`${baseURL}/api/put_image/`, formData, {headers: {"Content-Type": "multipart/form-data"}})
+                    .then(response => resolve({data: {link: response.data.image_url}}))
+                    .catch(error => reject(error));
+            }),
+        },
+    };
+
+    return <>
+        <NoZoomPopup/>
+        <Editor
+            editorState={editorState}
+            onEditorStateChange={setEditorState}
+            toolbar={toolbarOptions}
+            toolbarCustomButtons={[<ContextValuesSelector pasteText={pasteText}/>,
+                <AddBackgroundImageButton setBackgroundImage={setBackgroundImageURL}/>]}
+            localization={{locale: 'ru'}}
+        />
+    </>;
+};
+
+export default DiplomaEditor;
 
 const ContextValuesSelector = ({pasteText}) => {
     const options = [
@@ -40,7 +101,7 @@ const AddBackgroundImageButton = ({setBackgroundImage}) => {
         const formData = new FormData();
         formData.append('image', file);
 
-        axios.put(`${baseURL}/api/put_image/`, formData, {
+        axios.post(`${baseURL}/api/upload_image/`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 "X-CSRFToken": Cookies.get("csrftoken"),
@@ -86,48 +147,6 @@ const AddBackgroundImageButton = ({setBackgroundImage}) => {
     };
 
     return <input type="file" accept="application/pdf,image/jpeg,image/png,image/svg"
-                  onChange={insertBackgroundImage}/>;
+                  id="baground-image-input" onChange={insertBackgroundImage}/>;
 };
 
-
-const DiplomaEditor = ({editorState, setEditorState, setBackgroundImageURL}) => {
-    const pasteText = (text) => {
-        setEditorState(EditorState.push(editorState, Modifier.insertText(
-            editorState.getCurrentContent(),
-            editorState.getSelection(),
-            text), 'insert-characters'
-        ));
-    };
-
-    const toolbarOptions = {
-        options: ['history', 'inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'emoji', 'image'],
-        image: {
-            uploadEnabled: true,
-            previewImage: true,
-            uploadCallback: (image) => new Promise((resolve, reject) => {
-                const formData = new FormData();
-                formData.append("image", image);
-
-                axios.put(`${baseURL}/api/put_image/`, formData, {headers: {"Content-Type": "multipart/form-data"}})
-                    .then(response => resolve({data: {link: response.data.image_url}}))
-                    .catch(error => reject(error));
-            }),
-        },
-    };
-
-    return (
-        <>
-            <NoZoomPopup/>
-            <Editor
-                editorState={editorState}
-                onEditorStateChange={setEditorState}
-                toolbar={toolbarOptions}
-                toolbarCustomButtons={[<ContextValuesSelector pasteText={pasteText}/>,
-                    <AddBackgroundImageButton setBackgroundImage={setBackgroundImageURL}/>]}
-                localization={{locale: 'ru'}}
-            />
-        </>
-    );
-};
-
-export default DiplomaEditor;

@@ -11,8 +11,8 @@ const App = () => {
             <Navbar/>
             <Routes>
                 <Route path="/create-test" element={<TestConstructor/>}/>
-                <Route path="/test/:test_id/edit" element={<EditTest/>}/>
-                <Route path="/test/:test_id" element={<Test/>}/>
+                <Route path="/test/:testId/edit" element={<EditTest/>}/>
+                <Route path="/test/:testId" element={<Test/>}/>
             </Routes>
         </>
     );

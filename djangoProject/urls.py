@@ -36,7 +36,7 @@ urlpatterns = [
     path('api/get_user_data/', api_views.get_user_data, name='get_user_info'),
     path('api/get_test_edit_data/<int:test_id>/', api_views.get_test_edit_data, name='get_test_edit_data'),
     path('api/get_test_data/<int:test_id>/', api_views.get_test_data, name='get_test_data'),
-    path('api/put_image/', api_views.put_image, name='put_image'),
+    path('api/upload_image/', api_views.upload_image, name='upload_image'),
 ]
 
 if settings.DEBUG:

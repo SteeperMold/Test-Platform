@@ -166,9 +166,7 @@ const ImageQuestion = ({index, type, setType, text, rightAnswer, imageURL}) => {
             <div className="question-answers">
                 <input className="image-input" id={`image-input-${index}`} type="file"
                        name={`image[${index}]`} accept="image/jpeg, image/png"
-                       onChange={(event) => {
-                           setImageFile(event.target.files[0]);
-                       }}/>
+                       onChange={(event) => setImageFile(event.target.files[0])}/>
                 <input className="question-right-answer-input" name={`answer_text[${index}]`}
                        defaultValue={rightAnswer} placeholder="Правильный ответ" autoComplete="off" required/>
             </div>

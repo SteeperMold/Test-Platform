@@ -6,7 +6,8 @@ from .models import Test, Question, Image
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Test
-        fields = ['title', 'creation_date', 'theme', 'likes', 'dislikes', 'creator', 'custom_diploma_template']
+        fields = ['title', 'creation_date', 'theme', 'likes', 'dislikes', 'creator', 'custom_diploma_template',
+                  'diploma_background_image_url']
 
 
 class ImageSerializer(serializers.ModelSerializer):

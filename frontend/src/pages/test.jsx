@@ -11,7 +11,7 @@ import {baseURL} from "../App";
 
 const Test = () => {
     const [testData, setTestData] = useState(null);
-    const {test_id} = useParams();
+    const {testId} = useParams();
 
     const [questions, setQuestions] = useState([]);
 
@@ -29,7 +29,7 @@ const Test = () => {
     };
 
     useEffect(() => {
-        axios.get(`${baseURL}/api/get_test_data/${test_id}/`)
+        axios.get(`${baseURL}/api/get_test_data/${testId}/`)
             .then(response => {
                 setTestData(response.data);
                 setQuestions(response.data.questions.map(convertDataToComponents));
@@ -38,7 +38,7 @@ const Test = () => {
                 console.error(error);
                 setTestData({"error": "error loading data"});
             });
-    }, [test_id]);
+    }, [testId]);
 
     return (
         <>
@@ -53,7 +53,7 @@ const Test = () => {
                             <h1>Тест</h1>
                             <h2>{testData.test.title}</h2>
 
-                            <form action={`${baseURL}/test/${test_id}/`} method="post">
+                            <form action={`${baseURL}/test/${testId}/`} method="post">
                                 <CSRFToken/>
 
                                 {questions}
