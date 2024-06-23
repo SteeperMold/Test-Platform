@@ -19,4 +19,4 @@ const App = () => {
 }
 
 export default App;
-export const baseURL = "http://localhost:8000"; // "http://45.11.26.52";
+export const baseURL = "http://45.11.26.52"; // "http://localhost:8000";
