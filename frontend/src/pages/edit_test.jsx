@@ -63,17 +63,10 @@ const EditTest = () => {
 
                     return <Question index={index} key={index} questionType={data.question_type}
                                      text={data.question_text} rightAnswer={data.answer_text}
-                                     options={answerOptions} imageURL={data.image}/>;
+                                     options={answerOptions} imageUrl={data.image}/>;
                 }));
-
-                console.log(testData);
-                console.log(questions);
-
             })
-            .catch(error => {
-                console.error(error);
-                setTestData({"error": "error loading data"});
-            });
+            .catch(error => setTestData({"error": "error loading data"}));
     }, [testId]);
 
     return !testData ? <h1 className="center">Загрузка информации о тесте...</h1> : <>

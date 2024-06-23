@@ -76,18 +76,14 @@ def create_test(request):
         question = Question(test=test, question_text=question_text,
                             answer_text=answer_text, question_type=question_type)
 
-        if question_type == 'image':
-            image = request.FILES.get(f'image[{i}]')
-
-            if not image:
-                return render_error(request, 'Не удалось сохранить изображение!')
+        if image := request.FILES.get(f'image[{i}]'):
 
             if is_nsfw(image.read()):
                 return render_error(request, 'Тест содержит неприемлимые изображения!')
 
             question.image = image
 
-        elif question_type == 'choice':
+        if question_type == 'choice':
             for option_text in request.POST.getlist(f'option_texts[{i}]'):
                 answer_option = AnswerOption(question=question, option_text=option_text)
                 answer_options_to_save.append(answer_option)

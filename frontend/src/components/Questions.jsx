@@ -1,25 +1,24 @@
 import React from "react";
 import {baseURL} from "../App";
 
-const Question = ({index, questionText, questionType, answerOptions = null, imageURL = ''}) => {
-    return (
-        <>
-            {questionType === "text" && <TextQuestion index={index} questionText={questionText}/>}
-            {questionType === 'choice' &&
-                <ChoiceQuestion index={index} questionText={questionText} answerOptions={answerOptions}/>}
-            {questionType === 'image' && <ImageQuestion index={index} questionText={questionText} imageURL={imageURL}/>}
-            {questionType === 'name' && <NameQuestion index={index} questionText={questionText}/>}
-            {questionType === 'school_name' && <SchoolQuestion index={index} questionText={questionText}/>}
-        </>
-    );
+const Question = ({index, questionText, questionType, answerOptions = null, imageURL = null}) => {
+    return <>
+        {questionType === "text" && <TextQuestion index={index} questionText={questionText} imageUrl={imageURL}/>}
+        {questionType === 'choice' && <ChoiceQuestion index={index} questionText={questionText}
+                                                      answerOptions={answerOptions} imageUrl={imageURL}/>}
+        {questionType === 'name' && <NameQuestion index={index} questionText={questionText} imageUrl={imageURL}/>}
+        {questionType === 'school_name' && <SchoolQuestion index={index} questionText={questionText}
+                                                           imageUrl={imageURL}/>}
+    </>;
 };
 
 export default Question;
 
-const TextQuestion = ({index, questionText}) => {
+const TextQuestion = ({index, questionText, imageUrl}) => {
     return (
         <div className="question text-question">
             <h3>{questionText}</h3>
+            {imageUrl && <img src={`${baseURL}/${imageUrl}`} alt="Не удалось загрузить изображение"/>}
             <input className="input-default" type="text" name={`answer[${index}]`}
                    placeholder="Введите ответ" autoComplete="off" required/>
         </div>
@@ -27,15 +26,13 @@ const TextQuestion = ({index, questionText}) => {
 };
 
 export const AnswerOption = ({index, text}) => {
-    return (
-        <>
-            <input type="radio" name={`answer[${index}]`} value={text}/>
-            <p>{text}</p>
-        </>
-    );
+    return <>
+        <input type="radio" name={`answer[${index}]`} value={text}/>
+        <p>{text}</p>
+    </>;
 };
 
-const ChoiceQuestion = ({index, questionText, answerOptions}) => {
+const ChoiceQuestion = ({index, questionText, answerOptions, imageUrl}) => {
     let optionsTable = [];
     let row = [];
 
@@ -52,6 +49,7 @@ const ChoiceQuestion = ({index, questionText, answerOptions}) => {
     return (
         <div className="question choice-question">
             <h3>{questionText}</h3>
+            {imageUrl && <img src={`${baseURL}/${imageUrl}`} alt="Не удалось загрузить изображение"/>}
             <table>
                 <tbody>
                 {optionsTable}
@@ -61,22 +59,11 @@ const ChoiceQuestion = ({index, questionText, answerOptions}) => {
     );
 };
 
-
-const ImageQuestion = ({index, questionText, imageURL}) => {
-    return (
-        <div className="question image-question">
-            <h3>{questionText}</h3>
-            <img src={`${baseURL}/${imageURL}`} alt="Не удалось загрузить изображение"/>
-            <input className="input-default" type="text" name={`answer[${index}]`}
-                   placeholder="Введите ответ" autoComplete="off" required/>
-        </div>
-    );
-};
-
-const NameQuestion = ({index, questionText}) => {
+const NameQuestion = ({index, questionText, imageUrl}) => {
     return (
         <div className="question name-question">
             <h3>{questionText}</h3>
+            {imageUrl && <img src={`${baseURL}/${imageUrl}`} alt="Не удалось загрузить изображение"/>}
 
             <div className="inputs">
                 <input className="input-narrow" name="users_name" placeholder="Ваше имя" autoComplete="off" required/>
@@ -87,10 +74,11 @@ const NameQuestion = ({index, questionText}) => {
     );
 };
 
-const SchoolQuestion = ({index, questionText}) => {
+const SchoolQuestion = ({index, questionText, imageUrl}) => {
     return (
         <div className="question school-question">
             <h3>{questionText}</h3>
+            {imageUrl && <img src={`${baseURL}/${imageUrl}`} alt="Не удалось загрузить изображение"/>}
 
             <input className="input-default" name="school_name" placeholder="Ваше образовательное учреждение"
                    autoComplete="off" required/>

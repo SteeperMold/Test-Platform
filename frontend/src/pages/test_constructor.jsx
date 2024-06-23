@@ -22,11 +22,11 @@ const TestConstructor = ({
     const [activeTab, setActiveTab] = useState(1);
     const [questions, setQuestions] = useState(defaultQuestions);
     // edit diploma tab
-    const [editorOpen, setEditorOpen] = useState(defaultEditorState !== EditorState.createEmpty());
+    const [editorOpen, setEditorOpen] = useState(defaultEditorState.getCurrentContent().hasText());
     const [editorState, setEditorState] = useState(defaultEditorState);
     const [backgroundImageURL, setBackgroundImageURL] = useState(defaultBackgroundImageURL);
 
-    const submitTest = (event) => {
+    const submitTest = event => {
         if (editorOpen) {
             const rawContentState = convertToRaw(editorState.getCurrentContent());
             let content = draftToHtml(rawContentState);
@@ -38,7 +38,9 @@ const TestConstructor = ({
         }
 
         for (let i = 0; i !== questions.length; i++) {
-            if (document.querySelector(`form input[name="answer_text[${i}]"]`) === null) {
+            if ((document.querySelector(`form input[name="option_texts[${i}]"]`) !== null) &&
+                (document.querySelector(`form input[name="answer_text[${i}]"]`) === null)) {
+
                 event.preventDefault();
                 document.getElementsByClassName('question')[i].scrollIntoView({behavior: "smooth"});
             }
@@ -67,7 +69,11 @@ const TestConstructor = ({
                        autoComplete="off" required defaultValue={defaultTheme}/>
 
                 <div className="questions-container" id="questions-container">
-                    {questions}
+                    {questions.map((question, index) => <React.Fragment key={index}>
+                        {index < questions.length && <hr className="questions-separator"/>}
+                        {question}
+                        {index === questions.length - 1 && <hr className="questions-separator"/>}
+                    </React.Fragment>)}
                 </div>
 
                 <Controls questions={questions} setQuestions={setQuestions}/>

@@ -28,7 +28,7 @@
     width: 40%;
 }
 
-.question .question-right-answer-input, .answer-option-input {
+.answer-option-input {
     width: 90%;
 }
 
@@ -187,8 +187,11 @@
     cursor: pointer;
 }
 
-.image-preview img {
-    width: 100%;
+.image-preview {
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 #edit-diploma-content {
@@ -256,4 +259,32 @@
 
 .add-answer-option-tooltip button, .delete-answer-option-tooltip button {
     width: 100%;
+}
+
+.image-upload-tooltip {
+    width: 7.5%;
+}
+
+.image-upload-tooltip button {
+    border: none;
+    background: none;
+    width: 100%;
+    margin-top: 3px;
+}
+
+.image-upload-tooltip button:hover {
+    cursor: pointer;
+}
+
+.image-upload-tooltip button img {
+    width: 100%;
+}
+
+.questions-separator {
+    border: none;
+    border-top: 2px dashed #aaa;
+    border-top: 2px dashed #aaa;
+    /*border-style: ;*/
+    margin: 30px 25% 30px -25%;
+    width: 150%;
 }
