@@ -192,6 +192,15 @@
     height: auto;
     margin: 0 auto;
     display: block;
+    max-width: 100%;
+}
+
+.image-in-test {
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    max-width: 40%;
 }
 
 #edit-diploma-content {
@@ -283,8 +292,6 @@
 .questions-separator {
     border: none;
     border-top: 2px dashed #aaa;
-    border-top: 2px dashed #aaa;
-    /*border-style: ;*/
     margin: 30px 25% 30px -25%;
     width: 150%;
 }

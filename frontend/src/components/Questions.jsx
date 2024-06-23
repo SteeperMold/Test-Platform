@@ -18,7 +18,8 @@ const TextQuestion = ({index, questionText, imageUrl}) => {
     return (
         <div className="question text-question">
             <h3>{questionText}</h3>
-            {imageUrl && <img src={`${baseURL}/${imageUrl}`} alt="Не удалось загрузить изображение"/>}
+            {imageUrl && <img className="image-in-test" src={`${baseURL}/${imageUrl}`}
+                              alt="Не удалось загрузить изображение"/>}
             <input className="input-default" type="text" name={`answer[${index}]`}
                    placeholder="Введите ответ" autoComplete="off" required/>
         </div>
@@ -49,7 +50,8 @@ const ChoiceQuestion = ({index, questionText, answerOptions, imageUrl}) => {
     return (
         <div className="question choice-question">
             <h3>{questionText}</h3>
-            {imageUrl && <img src={`${baseURL}/${imageUrl}`} alt="Не удалось загрузить изображение"/>}
+            {imageUrl && <img className="image-in-test" src={`${baseURL}/${imageUrl}`}
+                              alt="Не удалось загрузить изображение"/>}
             <table>
                 <tbody>
                 {optionsTable}
@@ -63,7 +65,8 @@ const NameQuestion = ({index, questionText, imageUrl}) => {
     return (
         <div className="question name-question">
             <h3>{questionText}</h3>
-            {imageUrl && <img src={`${baseURL}/${imageUrl}`} alt="Не удалось загрузить изображение"/>}
+            {imageUrl && <img className="image-in-test" src={`${baseURL}/${imageUrl}`}
+                              alt="Не удалось загрузить изображение"/>}
 
             <div className="inputs">
                 <input className="input-narrow" name="users_name" placeholder="Ваше имя" autoComplete="off" required/>
@@ -78,7 +81,8 @@ const SchoolQuestion = ({index, questionText, imageUrl}) => {
     return (
         <div className="question school-question">
             <h3>{questionText}</h3>
-            {imageUrl && <img src={`${baseURL}/${imageUrl}`} alt="Не удалось загрузить изображение"/>}
+            {imageUrl && <img className="image-in-test" src={`${baseURL}/${imageUrl}`}
+                              alt="Не удалось загрузить изображение"/>}
 
             <input className="input-default" name="school_name" placeholder="Ваше образовательное учреждение"
                    autoComplete="off" required/>
