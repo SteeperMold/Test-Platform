@@ -12,6 +12,7 @@ import {baseURL} from "../App";
 
 
 const TestConstructor = ({
+                             formAction = `${baseURL}/create-test/`,
                              defaultTestName = "",
                              defaultTheme = "",
                              defaultQuestions = [<Question index={0} key={0}/>],
@@ -58,7 +59,7 @@ const TestConstructor = ({
                     type="button" id="edit-diploma-tab">Редактировать диплом
             </button>
         </div>
-        <form action={`${baseURL}/create-test/`} method="post" encType="multipart/form-data">
+        <form action={formAction} method="post" encType="multipart/form-data">
             <CSRFToken/>
 
             <div id="edit-test-content" className="tab-content"
