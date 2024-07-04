@@ -16,7 +16,8 @@
     height: initial;
 }
 
-.block-type-selector {
+.context-values-selector {
     width: 14rem;
     margin: 0 0 6px 10px;
+    z-index: 2;
 }
