@@ -8,7 +8,7 @@
 
 .rdw-editor-main {
     border-top: rgba(91, 91, 91, 0.5) 2px solid;
-    aspect-ratio: 1 / 1.414; /* Соотношение сторон листа а4 */
+    aspect-ratio: 210 / 297; /* Соотношение сторон листа а4 */
     font-size: 16px;
 }
 

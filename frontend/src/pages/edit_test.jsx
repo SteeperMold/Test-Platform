@@ -86,7 +86,7 @@ const EditTest = () => {
         {testData.error === 'questions not found' &&
             <ErrorMessage message="Некоректный тест"/>}
 
-        {!testData.error && <TestConstructor formAction={`${baseURL}/test/${testId}/edit/`}
+        {!testData.error && <TestConstructor formAction={`${baseURL}/test/${testId}/edit/`} buttonText="Изменить тест →"
                                              defaultTestName={testData.test.title} defaultTheme={testData.test.theme}
                                              defaultQuestions={questions} defaultEditorState={editorState}
                                              defaultBackgroundImageURL={testData.test.diploma_background_image_url}/>}

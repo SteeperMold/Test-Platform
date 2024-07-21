@@ -380,15 +380,24 @@ def download_diploma(request):
     if diploma_template:
         html_content = Template(diploma_template).render(Context(context))
         soup = BeautifulSoup(html_content, 'html.parser')
-        for p in soup.find_all('p'):
-            if not p.get_text(strip=True):
-                p['style'] = "height: 13px;"
+
+        for tag in [*soup.find_all('p'), *soup.find_all('span')]:
+            if not tag.get_text(strip=True):
+                tag['style'] = "height: 19px;"
+
         html_content = str(soup)
     else:
         html_template = render(request, 'diploma.html', context)
         html_content = html_template.content.decode('utf-8')
 
-    pdf = pdfkit.from_string(html_content, False, options={'encoding': 'utf-8'})
+    pdf = pdfkit.from_string(html_content, False, options={
+        'encoding': 'utf-8',
+        'dpi': '96',
+        'margin-top': '0',
+        'margin-right': '0',
+        'margin-bottom': '0',
+        'margin-left': '0',
+    })
 
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Diploma.pdf"'

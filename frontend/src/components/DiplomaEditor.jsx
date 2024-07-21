@@ -32,7 +32,7 @@ const DiplomaEditor = ({editorState, setEditorState, backgroundImageURL, setBack
             .catch(error => console.error(error));
     });
 
-    const pasteText = (text) => {
+    const pasteText = text => {
         setEditorState(EditorState.push(editorState, Modifier.insertText(
             editorState.getCurrentContent(),
             editorState.getSelection(),
@@ -45,7 +45,7 @@ const DiplomaEditor = ({editorState, setEditorState, backgroundImageURL, setBack
         image: {
             uploadEnabled: true,
             previewImage: true,
-            uploadCallback: (image) => new Promise((resolve, reject) => {
+            uploadCallback: image => new Promise((resolve, reject) => {
                 const formData = new FormData();
                 formData.append("image", image);
 

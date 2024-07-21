@@ -13,6 +13,7 @@ import {baseURL} from "../App";
 
 const TestConstructor = ({
                              formAction = `${baseURL}/create-test/`,
+                             buttonText = "Создать тест →",
                              defaultTestName = "",
                              defaultTheme = "",
                              defaultQuestions = [<Question index={0} key={0}/>],
@@ -80,7 +81,7 @@ const TestConstructor = ({
                 <Controls questions={questions} setQuestions={setQuestions}/>
 
                 <button id="test-constructor-submit-button" type="submit" className="button1" onClick={submitTest}>
-                    Создать тест →
+                    {buttonText}
                 </button>
             </div>
             <div id="edit-diploma-content" className="tab-content"
