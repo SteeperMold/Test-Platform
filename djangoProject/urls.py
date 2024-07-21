@@ -11,7 +11,7 @@ from test_platform_app import views
 urlpatterns = [
     path('', views.main, name='main'),
     path('tests/', views.tests, name='tests'),
-    path('create-test/', views.create_test, name='test_constructor'),
+    path('create-test/', views.CreateTestView.as_view(), name='test_constructor'),
     path('test/<int:test_id>/', views.test, name='test'),
     path('download_diploma/', views.download_diploma, name='download_diploma'),
     path('like/<int:test_id>/', views.like, name='like'),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('settings/', views.settings, name='settings'),
     path('test/<int:test_id>/stats/', views.stats, name='test_stats'),
-    path('test/<int:test_id>/edit/', views.edit_test, name='edit_test'),
+    path('test/<int:test_id>/edit/', views.EditTestView.as_view(), name='edit_test'),
     path('test/<int:test_id>/stats/useranswers/<int:user_test_result_id>/', views.user_answers, name='user_answers'),
     # API
     path('api/get_user_data/', api_views.get_user_data, name='get_user_info'),

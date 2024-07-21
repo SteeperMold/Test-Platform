@@ -7,8 +7,10 @@ from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import Context, Template
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
+from django.views.generic import View
 
 from test_platform_app.models import Test, Question, AnswerOption, UserTestResult, UserAnswer
 from .utils import date_to_time_ago, render_error, is_nsfw, csrf_protect_authenticated
@@ -44,28 +46,144 @@ def tests(request):
     return render(request, 'tests.html', context)
 
 
-@require_http_methods(["GET", "POST"])
-@csrf_protect_authenticated
-def create_test(request):
-    if request.method == "GET":
+class CreateTestView(View):
+    class NsfwImageException(Exception):
+        pass
+
+    def fill_test(self, test, request):
+        test.title = request.POST.get("title")
+        test.theme = request.POST.get("theme")
+
+        if request.user.is_authenticated:
+            test.creator = request.user
+
+        if diploma_template := request.POST.get("diploma_template"):
+            test.custom_diploma_template = diploma_template
+
+        if background_image := request.POST.get("background_image_url"):
+            test.diploma_background_image_url = background_image
+
+        question_texts = request.POST.getlist("question_texts")
+        question_types = request.POST.getlist("question_types")
+
+        questions_to_save = []
+        answer_options_to_save = []
+
+        for i, (question_type, question_text) in enumerate(zip(question_types, question_texts)):
+            answer_text = request.POST.get(f"answer_text[{i}]")
+
+            question = Question(test=test, question_text=question_text,
+                                answer_text=answer_text, question_type=question_type)
+
+            if image := request.FILES.get(f'image[{i}]'):
+
+                if is_nsfw(image.read()):
+                    raise self.NsfwImageException()
+
+                question.image = image
+
+            if question_type == 'choice':
+                for option_text in request.POST.getlist(f'option_texts[{i}]'):
+                    answer_option = AnswerOption(question=question, option_text=option_text)
+                    answer_options_to_save.append(answer_option)
+
+            questions_to_save.append(question)
+
+        return test, questions_to_save, answer_options_to_save
+
+    @staticmethod
+    def save_test(test, questions, answer_options):
+        test.save()
+
+        for question in questions:
+            question.save()
+
+        for answer_option in answer_options:
+            answer_option.save()
+
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request, *args, **kwargs):
         return render(request, "index.html")
 
-    title = request.POST.get("title")
-    theme = request.POST.get("theme")
+    @method_decorator(csrf_protect_authenticated)
+    def post(self, request, *args, **kwargs):
+        test = Test()
+
+        try:
+            test, questions, answer_options = self.fill_test(test, request)
+        except self.NsfwImageException:
+            return render_error(request, 'Тест содержит неприемлимые изображения!')
+
+        self.save_test(test, questions, answer_options)
+
+        context = {
+            "test_id": test.id,
+            "base_url": request.build_absolute_uri('/').rstrip('/'),
+        }
+
+        return render(request, 'adding_test_success.html', context)
+
+
+class EditTestView(CreateTestView):
+    @staticmethod
+    def delete_related_questions(test):
+        questions = Question.objects.filter(test=test)
+
+        for question in questions:
+            AnswerOption.objects.filter(question=question).delete()
+
+        questions.delete()
+
+        UserTestResult.objects.filter(test=test).delete()
+
+    @method_decorator(ensure_csrf_cookie)
+    def get(self, request, *args, **kwargs):
+        return render(request, "index.html")
+
+    @method_decorator(csrf_protect_authenticated)
+    def post(self, request, test_id, *args, **kwargs):
+        if not Test.objects.filter(id=test_id).exists():
+            return render_error(request, "Тест не существует")
+
+        if not Test.objects.filter(id=test_id, creator=request.user):
+            return render_error(request, "Вы не являетесь создателем теста")
+
+        test = Test.objects.get(id=test_id, creator=request.user)
+
+        try:
+            test, questions, answer_options = self.fill_test(test, request)
+        except self.NsfwImageException:
+            return render_error(request, "Тест содержит неприемлимые изображения!")
+
+        self.delete_related_questions(test)
+        self.save_test(test, questions, answer_options)
+
+        context = {
+            "test_id": test.id,
+            "base_url": request.build_absolute_uri('/').rstrip('/'),
+            "edited": True,
+        }
+
+        return render(request, "adding_test_success.html", context)
+
+
+@require_http_methods(["GET", "POST"])
+@ensure_csrf_cookie
+@csrf_protect_authenticated
+def edit_test(request, test_id):
+    if request.method == 'GET':
+        return render(request, "index.html")
+
+    if not Test.objects.filter(id=test_id).exists():
+        return render_error(request, "Тест не существует")
+
+    test = Test.objects.get(id=test_id)
+
+    test.title = request.POST.get("title")
+    test.theme = request.POST.get("theme")
 
     question_texts = request.POST.getlist("question_texts")
     question_types = request.POST.getlist("question_types")
-
-    test = Test(title=title, theme=theme)
-
-    if request.user.is_authenticated:
-        test.creator = request.user
-
-    if diploma_template := request.POST.get("diploma_template"):
-        test.custom_diploma_template = diploma_template
-
-    if background_image := request.POST.get("background_image_url"):
-        test.diploma_background_image_url = background_image
 
     questions_to_save = []
     answer_options_to_save = []
@@ -76,30 +194,49 @@ def create_test(request):
         question = Question(test=test, question_text=question_text,
                             answer_text=answer_text, question_type=question_type)
 
-        if image := request.FILES.get(f'image[{i}]'):
+        if question_type == 'image':
+            image = request.FILES.get(f'image[{i}]')
+
+            if not image:
+                return render_error(request, 'Не удалось сохранить изображение!')
 
             if is_nsfw(image.read()):
                 return render_error(request, 'Тест содержит неприемлимые изображения!')
 
             question.image = image
 
-        if question_type == 'choice':
+        elif question_type == 'choice':
             for option_text in request.POST.getlist(f'option_texts[{i}]'):
                 answer_option = AnswerOption(question=question, option_text=option_text)
                 answer_options_to_save.append(answer_option)
 
         questions_to_save.append(question)
 
+    if request.POST.get("diploma_template"):
+        test.custom_diploma_template = request.POST.get("diploma_template")
+
     test.save()
+
+    for question in Question.objects.filter(test=test):
+        AnswerOption.objects.filter(question=question).delete()
+
+    Question.objects.filter(test=test).delete()
+
     for question in questions_to_save:
         question.save()
 
     for answer_option in answer_options_to_save:
         answer_option.save()
 
+    for user_test_result in UserTestResult.objects.filter(test=test):
+        UserAnswer.objects.filter(user_test_result=user_test_result).delete()
+
+    UserTestResult.objects.filter(test=test).delete()
+
     context = {
         "test_id": test.id,
         "base_url": request.build_absolute_uri('/').rstrip('/'),
+        "edited": True,
     }
 
     return render(request, 'adding_test_success.html', context)
@@ -243,15 +380,24 @@ def download_diploma(request):
     if diploma_template:
         html_content = Template(diploma_template).render(Context(context))
         soup = BeautifulSoup(html_content, 'html.parser')
-        for p in soup.find_all('p'):
-            if not p.get_text(strip=True):
-                p['style'] = "height: 13px;"
+
+        for tag in [*soup.find_all('p'), *soup.find_all('span')]:
+            if not tag.get_text(strip=True):
+                tag['style'] = "height: 19px;"
+
         html_content = str(soup)
     else:
         html_template = render(request, 'diploma.html', context)
         html_content = html_template.content.decode('utf-8')
 
-    pdf = pdfkit.from_string(html_content, False, options={'encoding': 'utf-8'})
+    pdf = pdfkit.from_string(html_content, False, options={
+        'encoding': 'utf-8',
+        'dpi': '96',
+        'margin-top': '0',
+        'margin-right': '0',
+        'margin-bottom': '0',
+        'margin-left': '0',
+    })
 
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="Diploma.pdf"'
@@ -344,78 +490,3 @@ def user_answers(request, test_id, user_test_result_id):
     }
 
     return render(request, 'user_answers.html', context)
-
-
-@require_http_methods(["GET", "POST"])
-@ensure_csrf_cookie
-@csrf_protect_authenticated
-def edit_test(request, test_id):
-    if request.method == 'GET':
-        return render(request, "index.html")
-
-    if not Test.objects.filter(id=test_id).exists():
-        return render_error(request, "Тест не существует")
-
-    test = Test.objects.get(id=test_id)
-
-    test.title = request.POST.get("title")
-    test.theme = request.POST.get("theme")
-
-    question_texts = request.POST.getlist("question_texts")
-    question_types = request.POST.getlist("question_types")
-
-    questions_to_save = []
-    answer_options_to_save = []
-
-    for i, (question_type, question_text) in enumerate(zip(question_types, question_texts)):
-        answer_text = request.POST.get(f"answer_text[{i}]")
-
-        question = Question(test=test, question_text=question_text,
-                            answer_text=answer_text, question_type=question_type)
-
-        if question_type == 'image':
-            image = request.FILES.get(f'image[{i}]')
-
-            if not image:
-                return render_error(request, 'Не удалось сохранить изображение!')
-
-            if is_nsfw(image.read()):
-                return render_error(request, 'Тест содержит неприемлимые изображения!')
-
-            question.image = image
-
-        elif question_type == 'choice':
-            for option_text in request.POST.getlist(f'option_texts[{i}]'):
-                answer_option = AnswerOption(question=question, option_text=option_text)
-                answer_options_to_save.append(answer_option)
-
-        questions_to_save.append(question)
-
-    if request.POST.get("diploma_template"):
-        test.custom_diploma_template = request.POST.get("diploma_template")
-
-    test.save()
-
-    for question in Question.objects.filter(test=test):
-        AnswerOption.objects.filter(question=question).delete()
-
-    Question.objects.filter(test=test).delete()
-
-    for question in questions_to_save:
-        question.save()
-
-    for answer_option in answer_options_to_save:
-        answer_option.save()
-
-    for user_test_result in UserTestResult.objects.filter(test=test):
-        UserAnswer.objects.filter(user_test_result=user_test_result).delete()
-
-    UserTestResult.objects.filter(test=test).delete()
-
-    context = {
-        "test_id": test.id,
-        "base_url": request.build_absolute_uri('/').rstrip('/'),
-        "edited": True,
-    }
-
-    return render(request, 'adding_test_success.html', context)

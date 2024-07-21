@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {EditorState, ContentState} from "draft-js";
+import {ContentState, EditorState} from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import axios from "axios";
 import TestConstructor from "./test_constructor";
@@ -19,7 +19,7 @@ const EditTest = () => {
 
 
     useEffect(() => {
-        axios.get(`${baseURL}/api/get_test_edit_data/${testId}`)
+        axios.get(`${baseURL}/api/get_test_edit_data/${testId}/`)
             .then(response => {
                 setTestData(response.data);
 
@@ -70,13 +70,24 @@ const EditTest = () => {
     }, [testId]);
 
     return !testData ? <h1 className="center">Загрузка информации о тесте...</h1> : <>
-        {testData.error === 'error loading data' && <ErrorMessage message="При загрузке данных произошла ошибка"/>}
+
+        {testData.error === 'error loading data' &&
+            <ErrorMessage message="При загрузке данных произошла ошибка"/>}
+
         {testData.error === 'error loading image' &&
             <ErrorMessage message="При загрузке изображения произошла ошибка"/>}
-        {testData.error === 'test not found' && <ErrorMessage message="Тест не найден"/>}
-        {testData.error === 'not a creator' && <ErrorMessage message="Вы не создатель этого теста"/>}
-        {testData.error === 'questions not found' && <ErrorMessage message="Некоректный тест"/>}
-        {!testData.error && <TestConstructor defaultTestName={testData.test.title} defaultTheme={testData.test.theme}
+
+        {testData.error === 'test not found' &&
+            <ErrorMessage message="Тест не найден"/>}
+
+        {testData.error === 'not a creator' &&
+            <ErrorMessage message="Вы не создатель этого теста"/>}
+
+        {testData.error === 'questions not found' &&
+            <ErrorMessage message="Некоректный тест"/>}
+
+        {!testData.error && <TestConstructor formAction={`${baseURL}/test/${testId}/edit/`} buttonText="Изменить тест →"
+                                             defaultTestName={testData.test.title} defaultTheme={testData.test.theme}
                                              defaultQuestions={questions} defaultEditorState={editorState}
                                              defaultBackgroundImageURL={testData.test.diploma_background_image_url}/>}
     </>;

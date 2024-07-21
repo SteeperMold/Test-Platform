@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from "react";
+import React, {useEffect} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {baseURL} from '../App'
@@ -32,7 +32,7 @@ const DiplomaEditor = ({editorState, setEditorState, backgroundImageURL, setBack
             .catch(error => console.error(error));
     });
 
-    const pasteText = (text) => {
+    const pasteText = text => {
         setEditorState(EditorState.push(editorState, Modifier.insertText(
             editorState.getCurrentContent(),
             editorState.getSelection(),
@@ -45,7 +45,7 @@ const DiplomaEditor = ({editorState, setEditorState, backgroundImageURL, setBack
         image: {
             uploadEnabled: true,
             previewImage: true,
-            uploadCallback: (image) => new Promise((resolve, reject) => {
+            uploadCallback: image => new Promise((resolve, reject) => {
                 const formData = new FormData();
                 formData.append("image", image);
 
@@ -92,12 +92,12 @@ const ContextValuesSelector = ({pasteText}) => {
         },
     ];
 
-    return <Select options={options} className="block-type-selector" placeholder="Контекстные значения..."
+    return <Select options={options} className="context-values-selector" placeholder="Контекстные значения..."
                    onChange={selectedOption => pasteText(selectedOption.value)}/>;
 };
 
 const AddBackgroundImageButton = ({setBackgroundImage}) => {
-    const setBackgroundFromImage = useCallback(file => {
+    const setBackgroundFromImage = file => {
         const formData = new FormData();
         formData.append('image', file);
 
@@ -113,9 +113,9 @@ const AddBackgroundImageButton = ({setBackgroundImage}) => {
                 setBackgroundImage(imageURL);
                 document.querySelector('.rdw-editor-main').style.background = `url(${imageURL}) center center / contain no-repeat`;
             });
-    }, []);
+    };
 
-    const setBackgroundFromPdf = useCallback(file => {
+    const setBackgroundFromPdf = file => {
         const reader = new FileReader();
 
         reader.onload = async () => {
@@ -134,7 +134,7 @@ const AddBackgroundImageButton = ({setBackgroundImage}) => {
             }));
         };
         reader.readAsDataURL(file);
-    }, []);
+    };
 
     const insertBackgroundImage = (event) => {
         const file = event.target.files[0];

@@ -12,6 +12,8 @@ import {baseURL} from "../App";
 
 
 const TestConstructor = ({
+                             formAction = `${baseURL}/create-test/`,
+                             buttonText = "Создать тест →",
                              defaultTestName = "",
                              defaultTheme = "",
                              defaultQuestions = [<Question index={0} key={0}/>],
@@ -58,7 +60,7 @@ const TestConstructor = ({
                     type="button" id="edit-diploma-tab">Редактировать диплом
             </button>
         </div>
-        <form action={`${baseURL}/create-test/`} method="post" encType="multipart/form-data">
+        <form action={formAction} method="post" encType="multipart/form-data">
             <CSRFToken/>
 
             <div id="edit-test-content" className="tab-content"
@@ -79,7 +81,7 @@ const TestConstructor = ({
                 <Controls questions={questions} setQuestions={setQuestions}/>
 
                 <button id="test-constructor-submit-button" type="submit" className="button1" onClick={submitTest}>
-                    Создать тест →
+                    {buttonText}
                 </button>
             </div>
             <div id="edit-diploma-content" className="tab-content"
